@@ -1,4 +1,25 @@
 {
+  "__inputs": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.2.3"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -8,14 +29,22 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1595347057621,
+  "id": null,
+  "iteration": 1636075530491,
   "links": [
     {
       "icon": "external link",
@@ -28,10 +57,15 @@
       "type": "dashboards"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -53,7 +87,7 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "links": []
         },
         "overrides": []
       },
@@ -85,9 +119,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "8.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -168,7 +203,7 @@
       "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "links": []
         },
         "overrides": []
       },
@@ -200,9 +235,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "8.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -276,8 +312,12 @@
       }
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -285,278 +325,283 @@
         "y": 17
       },
       "id": 13,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$datasource",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 18
-          },
-          "hiddenSeries": false,
-          "id": 7,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "sort": "max",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "topk($top, sum(rate(container_fs_reads_bytes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) > 0",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "- topk($top, sum(rate(container_fs_writes_bytes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) < 0",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "topk($top, sum(rate(container_fs_reads_bytes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) > 0",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "- topk($top, sum(rate(container_fs_writes_bytes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) < 0",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
-              "refId": "D",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "top$top container IO +R -W for ns=\"$namespace\" (pod=\"$pod\",container=\"$container\") [bytes/sec]",
-          "tooltip": {
-            "shared": true,
-            "sort": 1,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "Bps",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "$datasource",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 26
-          },
-          "hiddenSeries": false,
-          "id": 8,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "sort": "max",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "topk($top, sum(rate(container_fs_reads_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) > 0",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "- topk($top, sum(rate(container_fs_writes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) < 0",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "topk($top, sum(rate(container_fs_reads_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) > 0",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "- topk($top, sum(rate(container_fs_writes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) < 0",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
-              "refId": "D",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "top$top container IO +R -W ns=\"$namespace\" (pod=\"$pod\",container=\"$container\") [iops]",
-          "tooltip": {
-            "shared": true,
-            "sort": 1,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "iops",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        }
-      ],
+      "panels": [],
       "repeat": null,
       "title": "Containers I/O",
       "type": "row"
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 7,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "max",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.3",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "topk($top, sum(rate(container_fs_reads_bytes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) > 0",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "- topk($top, sum(rate(container_fs_writes_bytes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) < 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
+          "refId": "B",
+          "step": 4
+        },
+        {
+          "expr": "topk($top, sum(rate(container_fs_reads_bytes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) > 0",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
+          "refId": "C",
+          "step": 4
+        },
+        {
+          "expr": "- topk($top, sum(rate(container_fs_writes_bytes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) < 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
+          "refId": "D",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "top$top container IO +R -W for ns=\"$namespace\" (pod=\"$pod\",container=\"$container\") [bytes/sec]",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "max",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.3",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "topk($top, sum(rate(container_fs_reads_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) > 0",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "- topk($top, sum(rate(container_fs_writes_total{namespace=~\"$namespace\",pod=~\"$pod.*\",container=~\"$container\"}[$_interval])) without (cpu)) < 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod}}/{{container}}",
+          "refId": "B",
+          "step": 4
+        },
+        {
+          "expr": "topk($top, sum(rate(container_fs_reads_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) > 0",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
+          "refId": "C",
+          "step": 4
+        },
+        {
+          "expr": "- topk($top, sum(rate(container_fs_writes_total{namespace=~\"$namespace\",pod_name=~\"$pod.*\",container_name=~\"$container\"}[$_interval])) without (cpu)) < 0",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{cluster}} - {{pod_name}}/{{container_name}}",
+          "refId": "D",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "top$top container IO +R -W ns=\"$namespace\" (pod=\"$pod\",container=\"$container\") [iops]",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "iops",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "collapsed": true,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 34
       },
       "id": 14,
       "panels": [
@@ -827,7 +872,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 25,
+  "schemaVersion": 31,
   "style": "dark",
   "tags": [
     "k8s",
@@ -838,6 +883,13 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": false,
+          "text": "prometheus",
+          "value": "prometheus"
+        },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -858,6 +910,8 @@
           "text": "10",
           "value": "10"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -886,86 +940,84 @@
           }
         ],
         "query": "5,10,20,100",
+        "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
       {
         "allValue": ".+",
-        "current": {
-          "selected": true,
-          "tags": [],
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": "$datasource",
-        "definition": "",
+        "definition": "container_start_time_seconds",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": true,
         "name": "namespace",
         "options": [],
-        "query": "kube_pod_container_status_running",
+        "query": {
+          "query": "container_start_time_seconds",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "/.*,namespace=\"([^\"]+)\".*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "$datasource",
-        "definition": "",
+        "definition": "container_start_time_seconds",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "pod",
         "multi": false,
         "name": "pod",
         "options": [],
-        "query": "kube_pod_container_status_running",
+        "query": {
+          "query": "container_start_time_seconds",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "/.*pod=\"([a-z0-9-]+?)(?:-([0-9a-f]+-)?.....(-.....)?|-[0-9]+)?\".*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
         "allValue": ".+",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "$datasource",
-        "definition": "",
+        "definition": "container_start_time_seconds",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "container",
         "multi": false,
         "name": "container",
         "options": [],
-        "query": "kube_pod_container_status_running",
+        "query": {
+          "query": "container_start_time_seconds",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "/.*container=\"([^\"]+)\".*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -979,6 +1031,8 @@
           "text": "auto",
           "value": "$__auto_interval__interval"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "label": null,
         "name": "_interval",
@@ -1077,5 +1131,5 @@
   "timezone": "",
   "title": "Kubernetes resource usage per namespace and pod",
   "uid": "XLehfQoWk",
-  "version": 6
+  "version": 1
 }
